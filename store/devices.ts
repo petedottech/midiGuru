@@ -219,7 +219,181 @@ export const useDeviceStore = defineStore({
         },
         'volca-drum': {
           name: 'KORG Volca Drum',
-          controllers: [],
+          controllers: {
+            'Wave guide': {
+              width: 'col-span-4',
+              parameters: {
+                'Model type': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Tube', 'String'],
+                },
+                Decay: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Body: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Tune: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+              },
+            },
+            'Part 1 - Layer 1': {
+              width: 'col-span-2',
+              parameters: {
+                'Sound source': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Wave', 'Saw', 'X', 'Y', 'Z'],
+                },
+                'Mod Type': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Ramp', 'Sine', 'Noise'],
+                },
+                'Amp EG': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Ramp', 'Expo', 'Double'],
+                },
+                Level: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Pitch: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Attack: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Release: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Mod amount': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Mod rate': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+              },
+            },
+            'Part 1 - Layer 2': {
+              width: 'col-span-2',
+              parameters: {
+                'Sound source': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Wave', 'Saw', 'X', 'Y', 'Z'],
+                },
+                'Mod Type': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Ramp', 'Sine', 'Noise'],
+                },
+                'Amp EG': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['Ramp', 'Expo', 'Double'],
+                },
+                Level: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Pitch: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Attack: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Release: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Mod amount': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Mod rate': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+              },
+            },
+            'Part 1 - Processing': {
+              width: 'col-span-4',
+              parameters: {
+                'Wave guide send': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Bit reduction': {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Fold: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Drive: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                Pan: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 64,
+                },
+                Gain: {
+                  type: 'MidiRange',
+                  cc_msg: 34,
+                  cc_value: 0,
+                },
+                'Pitch quantization': {
+                  type: 'MidiSelect',
+                  cc_msg: 53,
+                  cc_value: 0,
+                  items: ['On'],
+                },
+              },
+            },
+          },
         },
       },
     };

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-0.5">
     <div class="midiLabel text-center w-full">
       {{ name }} <button
         v-if="editable"
@@ -8,7 +8,7 @@
         (Edit)
       </button>
     </div>
-    <div class="pt-1">
+    <div class="">
       <div
         class="flex flex-wrap justify-center w-full gap-1"
       > 

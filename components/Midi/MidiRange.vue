@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col p-0.5">
     <label
       class="midiLabel w-full text-center"
       :for="name.toLowerCase()"
