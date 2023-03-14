@@ -75,6 +75,10 @@ button.small {
   @apply w-9;
 }
 
+button.smaller {
+  @apply border-0 w-auto h-auto underline bg-inherit text-black hover:no-underline font-semibold;
+}
+
 button.selected {
   @apply bg-red-600 translate-y-0.5 font-semibold;
 }

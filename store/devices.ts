@@ -29,6 +29,7 @@ export const useDeviceStore = defineStore({
                   type: 'MidiSelect',
                   cc_msg: 53,
                   cc_value: 0,
+                  editable: true,
                   items: ocsillators,
                 },
                 Shape: {
@@ -123,6 +124,7 @@ export const useDeviceStore = defineStore({
                   cc_msg: 88,
                   cc_value: 0,
                   items: modulations,
+                  editable: true,
                 },
                 Time: {
                   type: 'MidiRange',
@@ -144,6 +146,7 @@ export const useDeviceStore = defineStore({
                   cc_msg: 89,
                   cc_value: 0,
                   items: delays,
+                  editable: true,
                 },
                 Time: {
                   type: 'MidiRange',
@@ -170,6 +173,7 @@ export const useDeviceStore = defineStore({
                   cc_msg: 90,
                   cc_value: 0,
                   items: reverbs,
+                  editable: true,
                 },
                 Time: {
                   type: 'MidiRange',

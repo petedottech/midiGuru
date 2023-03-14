@@ -21,6 +21,7 @@
         :name="index1"
         :cc-msg="parameter.cc_msg"
         :items="parameter.type === 'MidiSelect' ? parameter.items : []"
+        :editable="parameter.type === 'MidiSelect' ? parameter.editable : false"
         @midi-output="blinkIt()"
       />
     </MidiGroup>

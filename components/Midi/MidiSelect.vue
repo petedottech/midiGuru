@@ -1,7 +1,12 @@
 <template>
   <div class="p-2">
     <div class="midiLabel text-center w-full">
-      {{ name }}
+      {{ name }} <button
+        v-if="editable"
+        class="smaller"
+      >
+        (Edit)
+      </button>
     </div>
     <div class="pt-1">
       <div
@@ -36,16 +41,20 @@ const props = defineProps({
       default: 0,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     ccMsg: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true
     }, // should be unsigned byte...
+    editable: {
+      type: Boolean,
+      default: false,
+    },
     items: {
-        type: Array,
-        default: () => [],
+      type: Array,
+      default: () => [],
     },
 });
 
