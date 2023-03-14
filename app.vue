@@ -53,8 +53,15 @@ h1 {
 }
 
 select {
-  @apply bg-gray-50 border-4 border-black text-gray-900 text-sm 
-  block w-full p-1 text-xs
+  @apply bg-gray-50 border-4 border-black text-gray-900 text-xs
+  block w-full p-1
+  focus:ring-white focus:border-4 focus:border-black
+  ;
+}
+
+input[type=text] {
+  @apply bg-gray-50 border-4 border-black text-gray-900 text-xs 
+  block w-full p-1
   focus:ring-white focus:border-4 focus:border-black
   ;
 }
@@ -85,6 +92,10 @@ button.selected {
 }
 
 .midiGroup.settings {
+  @apply bg-neutral-400;
+}
+
+.midiGroup.log {
   @apply bg-neutral-400;
 }
 

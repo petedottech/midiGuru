@@ -1,4 +1,4 @@
-import { NavConfig } from '~~/types/navigation';
+import { NavConfig } from '@/types/navigation';
 
 const navConfig = { pageTitle: 'midiGuru' } as NavConfig;
 

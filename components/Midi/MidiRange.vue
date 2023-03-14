@@ -9,7 +9,7 @@
       type="range"
       min="0"
       max="127"
-      :value="ccValueDefault"
+      :value="modelValue"
       class="slider"
       @input="updateCCValue"
     >
@@ -17,11 +17,20 @@
 </template>
 
 <script setup lang="ts">
+import { useMidiLogStore } from '~~/store/midilog';
+
+
+const midiLog = useMidiLogStore();
 
 const midi = useMidiState();
-const emit = defineEmits(['midiOutput'])
+const emit = defineEmits(['midiOutput', 'update:modelValue'])
+
 
 const props = defineProps({
+    modelValue: {
+      type: Number,
+      default: 0
+    },
     name: {
         type: String,
         required: true
@@ -29,10 +38,6 @@ const props = defineProps({
     ccMsg: {
         type: Number,
         required: true
-    }, // should be unsigned byte...
-    ccValueDefault: {
-        type: Number,
-        default: 0,
     }, // should be unsigned byte...
 });
 
@@ -42,7 +47,11 @@ const updateCCValue = (event: Event) => {
     const first = 0xb0 | midi.value.channel - 1;
     const msg = [first, props.ccMsg, target.value];
     midi.value.output.send(msg); // sends the message.
+    // update the store
+    midiLog.log(`${props.name} ${target.value} [${msg}]`);
+    
     emit('midiOutput');
+    emit('update:modelValue', parseInt(target.value));
   }
 }
 
