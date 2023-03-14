@@ -1,9 +1,35 @@
 <template>
+  <PageModal
+    name="Add new thingy"
+    :show="showEditMidiSelectModal"
+  >
+    <template #body>
+      <div class="text-center">
+        <input
+          v-for="item,index in items.filter(i => i.editable)"
+          :key="index"
+          type="text"
+          :value="item.name"
+        > 
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex space-x-4 w-full justify-center">
+        <button @click="createPatch">
+          Create Patch
+        </button>
+        <button @click="showCreatePatchModal = false">
+          Cancel 
+        </button>
+      </div>
+    </template>
+  </PageModal>
   <div class="p-0.5">
     <div class="midiLabel text-center w-full">
       {{ name }} <button
         v-if="editable"
         class="smaller"
+        @click="showEditMidiSelectModal = true"
       >
         (Edit)
       </button>
@@ -31,6 +57,8 @@ import { useMidiLogStore } from '~~/store/midilog';
 
 const midiLog = useMidiLogStore()
 const midi = useMidiState();
+
+const showEditMidiSelectModal = ref(false);
 
 const emit = defineEmits(['midiOutput', 'update:modelValue'])
 const selected = ref(0);
