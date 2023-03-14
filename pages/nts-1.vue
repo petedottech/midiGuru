@@ -1,6 +1,5 @@
 <template>
   <MidiConfig
-    class=""
     :blink="blink"
   />
 

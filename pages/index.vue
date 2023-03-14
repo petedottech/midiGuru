@@ -23,7 +23,7 @@
   </section>
   <section class="grid gap-4 grid-cols-2 max-w-screen-lg m-auto">
     <NuxtLink
-      to="nts-1"
+      to="/synth/nts-1"
       class="box"
     >
       <MidiGroup

@@ -1,5 +1,38 @@
 <template>
   <PageModal
+    name="MIDI Port"
+    :show="showSetMidiPortModal"
+  >
+    <template #body>
+      <div class="flex flex-col gap-3 p-2">
+        <div class="flex flex-col justify-center items-center">
+          <div class="text-xs">
+            Port
+          </div>
+          <select
+            id="midiPort"
+            v-model="midiPort"
+            name="midiPort"
+          >
+            <option
+              label="-- Select Midi Port --"
+              :value="-1"
+              selected
+            />
+            <option
+              v-for="port, index in midiPorts"
+              :key="index"
+              :label="port.name"
+              :value="index"
+            />
+          </select>
+        </div>
+      </div>
+    </template>
+    <template #footer />
+  </PageModal>
+
+  <PageModal
     name="Overwrite patch?"
     :show="showSavePatchModal"
   >
@@ -82,36 +115,14 @@
   </PageModal>
 
   <div
-    v-if="midi && midi.outputs.size"
+    v-if="midiPort !== -1"
     class="grid md:grid-cols-4 gap-4 grid-flow-row-dense"
   >
     <MidiGroup
-      name="MIDI Settings"
-      class="col-span-2 settings"
+      name="MIDI output settings"
+      class="col-span-1 settings"
     >
       <div class="flex flex-col gap-3 p-2">
-        <div class="flex flex-col justify-center items-center">
-          <div class="text-xs">
-            Port
-          </div>
-          <select
-            id="midiPort"
-            v-model="midiPort"
-            name="midiPort"
-          >
-            <option
-              label="-- Select Midi Port --"
-              :value="-1"
-              selected
-            />
-            <option
-              v-for="port, index in midiPorts"
-              :key="index"
-              :label="port.name"
-              :value="index"
-            />
-          </select>
-        </div>
         <div class="flex flex-col justify-center items-center">
           <div class="text-xs">
             Channel
@@ -130,9 +141,9 @@
             </button>
           </div>
         </div>
-        <div class="flex flex-row space-x-2 justify-center items-center">
-          <div>
-            MIDI Output
+        <div class="flex flex-col justify-center items-center">
+          <div class="text-xs">
+            MIDI output
           </div>
           <div
             class="w-5 h-5 border-4 border-black rounded-full" 
@@ -146,10 +157,8 @@
       name="Patches"
       class="col-span-1 settings"
     >
-      <div
-        class="flex flex-col items-center justify-center gap-1 p-2"
-      > 
-        <div class="space-x-1">
+      <div class="flex flex-col gap-3 p-2">
+        <div class="flex flex-wrap justify-center w-full gap-1">
           <button
             class="btn"
             @click="showSavePatchModal = true"
@@ -169,19 +178,23 @@
             Create Patch
           </button>
         </div>
-        <h1>{{ currentPatch }}</h1>
-        <button
-          class="btn"
-          @click="sendPanel()"
-        >
-          Send Panel
-        </button>
+        <div class="flex flex-wrap justify-center w-full gap-1">
+          <h1>Current patch: {{ currentPatch }}</h1>
+        </div>
+        <div class="flex flex-wrap justify-center w-full gap-1">
+          <button
+            class="btn"
+            @click="sendPanel()"
+          >
+            Send Panel
+          </button>
+        </div>
       </div>
     </MidiGroup>
 
     <MidiGroup
-      name="MIDI Log"
-      class="col-span-1 log"
+      name="MIDI log"
+      class="col-span-2 log"
     >
       <div class="overflow-y-scroll h-36 bg-neutral-400 p-4 text-xs font-mono">
         <p
@@ -226,6 +239,8 @@ const localBlink = ref(false);
 const showSavePatchModal = ref(false);
 const showLoadPatchModal = ref(false);
 const showCreatePatchModal = ref(false);
+
+const showSetMidiPortModal = ref(true);
 
 const props = defineProps({
   blink: {
@@ -284,6 +299,7 @@ watch(midiPort, (port) => {
   } else {
     midiState.value.output = midiPorts.value[port]
     midiLog.log(`MIDI port ${midiPorts.value}`)
+    showSetMidiPortModal.value = false;
   }
 });
 
