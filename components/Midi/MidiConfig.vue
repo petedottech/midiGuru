@@ -54,88 +54,6 @@
     <template #footer />
   </PageModal>
 
-  <PageModal
-    name="Overwrite patch?"
-    :show="showSavePatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        This will overwrite the settings in '{{ currentPatch }}'
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="savePatch">
-          Save Patch
-        </button>
-        <button @click="showSavePatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
-  <PageModal
-    name="Load patch"
-    :show="showLoadPatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        <select
-          id="patch"
-          v-model="patchToLoad"
-          name="patch"
-        >
-          <option
-            label="-- Select patch --"
-            :value="-1"
-            selected
-          />
-          <option
-            v-for="patch, index in patchStore.getPatches[deviceStore.getCurrent]"
-            :key="index"
-            :label="index"
-            :value="index"
-          />
-        </select>
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="loadPatch">
-          Load patch
-        </button>
-        <button @click="showLoadPatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
-  <PageModal
-    name="Create new patch"
-    :show="showCreatePatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        <input
-          v-model="newPatchName"
-          type="text"
-        > 
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="createPatch">
-          Create Patch
-        </button>
-        <button @click="showCreatePatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
   <div
     v-if="midiPort !== -1"
     class="grid md:grid-cols-4 gap-4 pb-4 grid-flow-row-dense"
@@ -197,63 +115,8 @@
       </div>
     </MidiGroup>
 
-    <MidiGroup
-      name="Patches"
-      class="col-span-1 settings"
-    >
-      <div class="flex flex-col gap-3 p-2">
-        <div class="flex flex-wrap justify-center w-full gap-1">
-          <button
-            class="btn"
-            @click="showSavePatchModal = true"
-          >
-            Save Patch
-          </button>
-          <button
-            class="btn"
-            @click="showLoadPatchModal = true"
-          >
-            Load Patch
-          </button>
-          <button
-            class="btn"
-            @click="showCreatePatchModal = true"
-          >
-            Create Patch
-          </button>
-        </div>
-        <div class="flex flex-wrap justify-center w-full gap-1">
-          <h1>Current patch: {{ currentPatch }}</h1>
-        </div>
-        <div class="flex flex-wrap justify-center w-full gap-1">
-          <button
-            class="btn"
-            @click="sendPanel()"
-          >
-            Send Panel
-          </button>
-        </div>
-      </div>
-    </MidiGroup>
-
-    <MidiGroup
-      name="MIDI log"
-      class="col-span-2 log"
-    >
-      <div
-        id="scroll"
-        ref="scroll"
-        class="overflow-y-scroll h-64 bg-neutral-300 px-4 py-2 border-4 border-black text-xs text-black font-mono"
-      >
-        <p
-          v-for="message, index in midiLog.messages"
-          :key="index"
-        >
-          {{ message }}
-        </p>
-        <div id="scroll-anchor" />
-      </div>
-    </MidiGroup>
+    <MidiPatches />
+    <MidiLogger />
   </div>
   <div
     v-else
@@ -267,11 +130,7 @@
 
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
-import { useDeviceStore } from '~~/store/devices';
-import { usePatchStore } from '~~/store/patches';
 
-const deviceStore = useDeviceStore();
-const patchStore = usePatchStore();
 const midiLog = useMidiLogStore();
 const midiState = useMidiState();
 
@@ -279,16 +138,8 @@ const midiChannel = ref(1);
 const midi = ref(null);
 const midiPorts = ref(null);
 const midiPort = ref(-1);
-const currentPatch = ref('Default');
-const patchToLoad = ref(-1);
-const newPatchName = ref('');
-// const scroll = ref(null);
 
 const localBlink = ref(false);
-
-const showSavePatchModal = ref(false);
-const showLoadPatchModal = ref(false);
-const showCreatePatchModal = ref(false);
 
 const showSetMidiPortModal = ref(false);
 const showNoMidiModal = ref(false);
@@ -300,28 +151,10 @@ const props = defineProps({
   }
 });
 
-const savePatch = () => {
-  patchStore.getPatches[deviceStore.getCurrent][currentPatch.value] = deviceStore.getDevices[deviceStore.getCurrent];
-  showSavePatchModal.value = false;
-};
-
-const loadPatch = () => {
-  currentPatch.value = patchToLoad.value;
-  showLoadPatchModal.value = false;
-};
-
 const demoMode = () => {
   midiPort.value = -999;
   showNoMidiModal.value = false;
 }
-
-const createPatch = () => {
-  showCreatePatchModal.value = false;
-  // Check that the name does't already exits...
-  patchStore.getPatches[deviceStore.getCurrent][newPatchName.value] = deviceStore.getDevices[deviceStore.getCurrent];
-  currentPatch.value = newPatchName.value;
-  newPatchName.value = '';
-};
 
 onNuxtReady(async () => {
     try {
@@ -335,7 +168,7 @@ onNuxtReady(async () => {
 
       if (midiPorts.value.length < 1){
         midiLog.log("No MIDI ports found");
-        throw('No midi ports')
+        throw('No midi ports');
       }
 
       showSetMidiPortModal.value = true;
@@ -359,25 +192,7 @@ watch(midiPort, (port) => {
     midiLog.log(`MIDI port ${midiPorts.value}`)
     showSetMidiPortModal.value = false;
   }
-
-  // console.log(scroll.value);
-  // scroll.value.scroll(0, 1);
 });
-
-watch(currentPatch, (patch) => {
-  deviceStore.getDevices[deviceStore.getCurrent] = patchStore.getPatches[deviceStore.getCurrent][patch]
-});
-
-const sendPanel = () => {
-  for (const controller in deviceStore.getDevices[deviceStore.getCurrent]['controllers']) {
-    for (const parameter in deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters']) {
-      const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
-      const first = 0xb0 | midiState.value.channel - 1;
-      const msg = [first, settings.cc_msg, settings.cc_value];
-      midiState.value.output.send(msg); // sends the message.
-    }
-  }
-};
 
 let blinkTimeout = -1;
 
@@ -390,14 +205,3 @@ watch(() => props.blink, () => {
 });
 
 </script>
-
-<style scoped>
-#scroll * {
-  overflow-anchor: none;
-}
-
-#scroll-anchor {
-  overflow-anchor: auto;
-  height: 1px;
-}
-</style>
