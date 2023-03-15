@@ -27,10 +27,12 @@
       class="box"
     >
       <MidiGroup
-        name="KORG NTS-1"
+        name="."
         class="nts-1"
       >
-        <br>
+        <h2 class="text-center text-2xl">
+          KORG NTS-1
+        </h2>
       </MidiGroup>
     </NuxtLink>
     <!--NuxtLink
@@ -38,12 +40,12 @@
       class="box"
     -->
     <MidiGroup
-      name="KORG Volca Drum"
+      name="Coming soon"
       class="volca-drum"
     >
-      <div class="text-center">
-        Coming soon
-      </div>
+      <h2 class="text-center text-2xl">
+        KORG Volca Drum
+      </h2>
     </MidiGroup>
     <!--NuxtLink-->
   </section>
