@@ -29,6 +29,9 @@
         @midi-output="midiOutput"
       />
     </MidiGroup>
+    <div
+      class="col-span-4"
+    />
   </div>
   <div
     v-else
