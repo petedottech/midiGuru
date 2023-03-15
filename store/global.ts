@@ -7,7 +7,7 @@ export const useGlobalStore = defineStore({
     return {
       midiAccess: false,
       midiOutput: -1,
-      pageTitle: 'midiGuru',
+      pageTitle: '',
     };
   },
   //  persist: {

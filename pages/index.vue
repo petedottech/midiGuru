@@ -51,11 +51,13 @@
 
 
 <script setup lang="ts">
-const navState = useNavState();
+import { useGlobalStore } from '~~/store/global';
+const globalStore = useGlobalStore();
 
 onMounted(() => {
-  navState.value.pageTitle = ''
+  globalStore.pageTitle = ''; 
 });
+
 </script>
 
 <style lang="postcss">
