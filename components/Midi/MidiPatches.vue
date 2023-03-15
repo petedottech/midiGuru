@@ -5,7 +5,7 @@
   >
     <template #body>
       <div class="text-center">
-        This will overwrite the settings in '{{ currentPatch }}'
+        This will overwrite the settings in '{{ patchStore.getCurrent }}'
       </div>
     </template>
     <template #footer>
@@ -107,7 +107,7 @@
         </button>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
-        <h1>Current patch: {{ currentPatch }}</h1>
+        <h1>Current patch: {{ patchStore.getCurrent }}</h1>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
         <button
@@ -125,10 +125,8 @@
 import { useDeviceStore } from '~~/store/devices';
 import { usePatchStore } from '~~/store/patches';
 
-const midiState = useMidiState();
 const patchToLoad = ref(-1);
 const newPatchName = ref('');
-const currentPatch = ref('Default');
 const deviceStore = useDeviceStore();
 const patchStore = usePatchStore();
 
@@ -137,12 +135,13 @@ const showLoadPatchModal = ref(false);
 const showCreatePatchModal = ref(false);
 
 const savePatch = () => {
-  patchStore.getPatches[deviceStore.getCurrent][currentPatch.value] = deviceStore.getDevices[deviceStore.getCurrent];
+  patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent] = deviceStore.getDevices[deviceStore.getCurrent];
   showSavePatchModal.value = false;
 };
 
 const loadPatch = () => {
-  currentPatch.value = patchToLoad.value;
+  patchStore.setCurrent = patchToLoad.value;
+  deviceStore.getDevices[deviceStore.getCurrent] = patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent]
   showLoadPatchModal.value = false;
 };
 
@@ -150,21 +149,20 @@ const createPatch = () => {
   showCreatePatchModal.value = false;
   // Check that the name does't already exits...
   patchStore.getPatches[deviceStore.getCurrent][newPatchName.value] = deviceStore.getDevices[deviceStore.getCurrent];
-  currentPatch.value = newPatchName.value;
+  patchStore.setCurrent = patchToLoad.value;
   newPatchName.value = '';
 };
 
-watch(currentPatch, (patch) => {
-  deviceStore.getDevices[deviceStore.getCurrent] = patchStore.getPatches[deviceStore.getCurrent][patch]
-});
 
 const sendPanel = () => {
   for (const controller in deviceStore.getDevices[deviceStore.getCurrent]['controllers']) {
     for (const parameter in deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters']) {
-      const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
-      const first = 0xb0 | midiState.value.channel - 1;
-      const msg = [first, settings.cc_msg, settings.cc_value];
-      midiState.value.output.send(msg); // sends the message.
+      console.log(controller, parameter);
+      // const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
+      // const first = 0xb0 | midiState.value.channel - 1;
+      // const msg = [first, settings.cc_msg, settings.cc_value];
+      // midiState.value.output.send(msg); // sends the message.
+      // Send the midi message (via events?)
     }
   }
 };

@@ -96,8 +96,8 @@
               v-for="channel in [...Array(16).keys()].map(c => c + 1)"
               :key="channel"
               class="small"
-              :class="{ 'selected': midiChannel === channel }" 
-              @click="midiChannel = channel"
+              :class="{ 'selected': patchStore.getMidiChannel === channel }" 
+              @click="setMidiChannel(channel)"
             >
               {{ channel }}
             </button>
@@ -130,19 +130,12 @@
 
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
+import { useGlobalStore } from '~~/store/global';
+import { usePatchStore } from '~~/store/patches';
 
+const globalStore = useGlobalStore();
+const patchStore = usePatchStore();
 const midiLog = useMidiLogStore();
-const midiState = useMidiState();
-
-const midiChannel = ref(1);
-const midi = ref(null);
-const midiPorts = ref(null);
-const midiPort = ref(-1);
-
-const localBlink = ref(false);
-
-const showSetMidiPortModal = ref(false);
-const showNoMidiModal = ref(false);
 
 const props = defineProps({
   blink: {
@@ -151,9 +144,22 @@ const props = defineProps({
   }
 });
 
+const midiPorts = ref(null);
+const midiPort = ref(-1);
+
+const localBlink = ref(false);
+
+const showSetMidiPortModal = ref(false);
+const showNoMidiModal = ref(false);
+
 const demoMode = () => {
   midiPort.value = -999;
   showNoMidiModal.value = false;
+}
+
+const setMidiChannel = (channel: number) => {
+  patchStore.setMidiChannel(channel);
+  midiLog.log(`MIDI (global) channel ${channel}`)
 }
 
 onNuxtReady(async () => {
@@ -161,10 +167,8 @@ onNuxtReady(async () => {
       const midiAccess = await navigator.requestMIDIAccess( { sysex: true });
 
       midiLog.log("MIDI ready!");
-      midiState.value.haveAccess = true;
-      midi.value = midiAccess;
+      globalStore.setMidiAccess(true);
       midiPorts.value = new Array(...midiAccess.outputs.values());
-      midiState.value.channel = midiChannel;
 
       if (midiPorts.value.length < 1){
         midiLog.log("No MIDI ports found");
@@ -174,28 +178,24 @@ onNuxtReady(async () => {
       showSetMidiPortModal.value = true;
 
     } catch (error) {
+      console.log(error);
       midiLog.log("MIDI access failed!");
       showNoMidiModal.value = true;
     }
 });
 
-watch(midiChannel, (channel) => {
-  midiState.value.channel = channel;
-  midiLog.log(`MIDI (global) channel ${channel}`)
-});
 
 watch(midiPort, (port) => {
   if (port === -1 || port === -999) {
-    midiState.value.output = port;
+    globalStore.setMidiOutput(port);
   } else {
-    midiState.value.output = midiPorts.value[port]
+    globalStore.setMidiOutput(midiPorts.value[port]);
     midiLog.log(`MIDI port ${midiPorts.value}`)
     showSetMidiPortModal.value = false;
   }
 });
 
 let blinkTimeout = -1;
-
 watch(() => props.blink, () => {
   clearTimeout(blinkTimeout);
   localBlink.value = true;

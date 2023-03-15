@@ -3,11 +3,11 @@
     :blink="blink"
   />
   <div
-    v-if="midiState.output !== -1"
+    v-if="globalStore.getMidiOutput !== -1"
     class="grid grid-cols-4 gap-4 grid-flow-row-dense"
   >
     <MidiGroup
-      v-for="controller, index in deviceStore.getDevices[synth].controllers"
+      v-for="controller, index in deviceStore.getDevices[deviceStore.getCurrent].controllers"
       :key="index"
       :name="index"
       class="nts-1"
@@ -33,14 +33,15 @@
 import { ConcreteComponent } from 'vue';
 import { useDeviceStore } from '~~/store/devices';
 import { useMidiLogStore } from '~~/store/midilog';
+import { useGlobalStore } from '~~/store/global';
+import { usePatchStore } from '~~/store/patches';
 
 const midiLog = useMidiLogStore()
-const midi = useMidiState();
-
+const globalStore = useGlobalStore()
+const patchStore = usePatchStore()
 const deviceStore = useDeviceStore();
+
 const route = useRoute();
-const synth = route.params.name;
-deviceStore.setCurrent(synth);
 
 interface MidiElements {
   name: string;
@@ -52,21 +53,18 @@ const midiElements : MidiElements = {
   'MidiSelect': resolveComponent('MidiSelect'),
 };
 
-const midiState = useMidiState();
-const navState = useNavState();
-
 const blink = ref(false);
 
 const midiOutput = (midiMessage) => {
   const msg = [
-    midiMessage.status | midi.value.channel - 1,
+    midiMessage.status | patchStore.getMidiChannel - 1,
     midiMessage.data_one,
     midiMessage.data_two
   ];
 
   // FIXME: -999 is an ugly hack for demo mode...
-  if (midi.value.output !== -999) {
-    midi.value.output.send(msg); // sends the message.
+  if (globalStore.getMidiOutput !== -999) {
+    globalStore.getMidiOutput.send(msg); // sends the message.
     midiLog.log(`MIDI Out: [${msg}]`);
   } else {
     midiLog.log(`[DEMO MODE] MIDI Out: [${msg}]`);
@@ -75,7 +73,9 @@ const midiOutput = (midiMessage) => {
 }
 
 onMounted(() => {
-  navState.value.pageTitle = deviceStore.getDevices[synth].name;
+  const synth = route.params.name;
+  globalStore.setPageTitle(deviceStore.getDevices[synth].name);
+  deviceStore.setCurrent(synth);
 });
 
 </script>

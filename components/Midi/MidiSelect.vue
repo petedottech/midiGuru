@@ -52,7 +52,7 @@
       {{ name }} <button
         v-if="editable"
         class="smaller"
-        @click="showEditMidiSelectModal = true"
+        @click="editItems"
       >
         (Edit)
       </button>
@@ -76,8 +76,14 @@
 
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
+import { usePatchStore } from '~~/store/patches';
+import { useDeviceStore } from '~~/store/devices';
+
+import { rangeObjectValues } from '~~/utils/midi';
 
 const midiLog = useMidiLogStore()
+const patchStore = usePatchStore();
+const deviceStore = useDeviceStore();
 const emit = defineEmits(['midiOutput', 'update:modelValue'])
 const props = defineProps({
     modelValue: {
@@ -111,13 +117,13 @@ const selected = ref(0);
 const localItems = ref([]);
 const addedItem = ref('');
 
-localItems.value = [...props.items.filter(i => i.editable).map(i => i.name)];
-          // v-for="item, index in localItems.filter(i => i.editable)"
+const editItems = () => {
+  localItems.value = [...props.items.filter(i => i.editable).map(i => i.name)];
+  showEditMidiSelectModal.value = true;
+}
 
 const removeLocalItem = index => {
- console.log(localItems.value)
  localItems.value.splice(index, 1);
- console.log(localItems.value)
 }
 
 const addLocalItem = () => {
@@ -126,7 +132,13 @@ const addLocalItem = () => {
 }
 
 const updateItems = () => {
-  console.log(localItems.value);
+  const result: any[] = [...props.items.filter(i => !i.editable).map(i => ({ name: i.name, editable: false}))];
+  const updatedItems = rangeObjectValues(result.concat(localItems.value.map(i => ({ name: i, editable: true }))));
+
+  patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent].controllers[props.parent].parameters[props.name].items = updatedItems;
+  // HACKY
+  deviceStore.getDevices[deviceStore.getCurrent].controllers[props.parent].parameters[props.name].items = updatedItems;
+
   showEditMidiSelectModal.value = false;
 }
 
@@ -138,13 +150,9 @@ watch(() => props.modelValue, (updated, old) => {
 });
 
 watch(selected, (selected) => {
-  if (selected > -1) {
-    const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
-    midiLog.log(`${props.parent} ${props.name} ${props.items[selected].name} ${props.ccMsg} ${props.items[selected].value}`);
-    emit('midiOutput', midiMsg);
-    emit('update:modelValue', props.items[selected].value)
-  } else {
-    console.log('ERRROR MIDI SELECT$ED -1 in MidiSelect', props.name);
-  }
+  const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
+  midiLog.log(`${props.parent} ${props.name} ${props.items[selected].name} ${props.ccMsg} ${props.items[selected].value}`);
+  emit('midiOutput', midiMsg);
+  emit('update:modelValue', props.items[selected].value)
 })
 </script>

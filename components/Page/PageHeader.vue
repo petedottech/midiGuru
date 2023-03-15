@@ -1,8 +1,8 @@
 <template>
   <div class="w-full flex items-center justify-between">
-    <div v-if="navState.pageTitle.length">
+    <div v-if="globalStore.getPageTitle.length">
       <h1 class="text-2xl md:text-5xl font-semibold">
-        {{ navState.pageTitle }} 
+        {{ globalStore.getPageTitle }} 
       </h1>
     </div>
     <div
@@ -13,12 +13,6 @@
         class="h-8 md:h-12"
         src="~/assets/mididin.svg"
       >
-      <!--NuxtLink to="/about">
-        About
-      </NuxtLink-->
-      <!--NuxtLink to="/nts-1">
-        NTS-1
-      </NuxtLink-->
     </div>
     <NuxtLink
       to="/"
@@ -32,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-
-const navState = useNavState();
-
+import { useGlobalStore } from '~~/store/global';
+const globalStore = useGlobalStore();
 </script>
