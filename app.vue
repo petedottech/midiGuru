@@ -100,7 +100,7 @@ button.selected {
 }
 
 .midiGroup.settings {
-  @apply bg-neutral-400;
+  @apply bg-neutral-300;
 }
 
 .midiGroup.log {

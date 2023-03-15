@@ -1,11 +1,14 @@
 <template>
-  <MidiConfig
-    :blink="blink"
-  />
+  <MidiSetup />
   <div
     v-if="globalStore.getMidiOutput !== -1"
     class="grid grid-cols-4 gap-4 grid-flow-row-dense"
   >
+    <MidiConfig
+      :blink="blink"
+    />
+    <MidiPatches @midi-output="midiOutput" />
+    <MidiLogger />
     <MidiGroup
       v-for="controller, index in deviceStore.getDevices[deviceStore.getCurrent].controllers"
       :key="index"
@@ -26,6 +29,14 @@
         @midi-output="midiOutput"
       />
     </MidiGroup>
+  </div>
+  <div
+    v-else
+    class="relative p-6 pt-2 pb-2 mb-6 h-full flex justify-center items-center"
+  >
+    <img
+      src="~/assets/nomididin.svg"
+    >
   </div>
 </template>
   

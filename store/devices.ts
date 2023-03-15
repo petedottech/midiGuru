@@ -210,7 +210,7 @@ export const useDeviceStore = defineStore({
                 Length: {
                   type: 'MidiSelect',
                   cc_msg: 119,
-                  cc_value: 16,
+                  cc_value: 1,
                   items: arpLengths,
                 },
               },

@@ -125,6 +125,8 @@
 import { useDeviceStore } from '~~/store/devices';
 import { usePatchStore } from '~~/store/patches';
 
+const emit = defineEmits(['midiOutput']);
+
 const patchToLoad = ref(-1);
 const newPatchName = ref('');
 const deviceStore = useDeviceStore();
@@ -157,12 +159,9 @@ const createPatch = () => {
 const sendPanel = () => {
   for (const controller in deviceStore.getDevices[deviceStore.getCurrent]['controllers']) {
     for (const parameter in deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters']) {
-      console.log(controller, parameter);
-      // const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
-      // const first = 0xb0 | midiState.value.channel - 1;
-      // const msg = [first, settings.cc_msg, settings.cc_value];
-      // midiState.value.output.send(msg); // sends the message.
-      // Send the midi message (via events?)
+      const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
+      const midiMsg = { status: 0xb0, data_one: settings.cc_msg, data_two: settings.cc_value };
+      emit('midiOutput', midiMsg);
     }
   }
 };
