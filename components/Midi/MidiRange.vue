@@ -19,13 +19,8 @@
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
 
-
 const midiLog = useMidiLogStore();
-
-const midi = useMidiState();
 const emit = defineEmits(['midiOutput', 'update:modelValue'])
-
-
 const props = defineProps({
     modelValue: {
       type: Number,
@@ -34,6 +29,10 @@ const props = defineProps({
     name: {
         type: String,
         required: true
+    },
+    parent: {
+        type: String,
+        default: '' 
     },
     ccMsg: {
         type: Number,
@@ -44,13 +43,10 @@ const props = defineProps({
 const updateCCValue = (event: Event) => {
   if (event.target) {
     const target = event.target as HTMLInputElement;
-    const first = 0xb0 | midi.value.channel - 1;
-    const msg = [first, props.ccMsg, target.value];
-    midi.value.output.send(msg); // sends the message.
-    // update the store
-    midiLog.log(`${props.name} ${target.value} [${msg}]`);
     
-    emit('midiOutput');
+    const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: target.value };
+    midiLog.log(`${props.parent} ${props.name} ${props.ccMsg} ${target.value}`);
+    emit('midiOutput', midiMsg);
     emit('update:modelValue', parseInt(target.value));
   }
 }

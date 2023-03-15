@@ -66,6 +66,10 @@ input[type=text] {
   ;
 }
 
+input[type=text]:disabled {
+  @apply bg-neutral-400;
+}
+
 button {
   @apply bg-red-800 border-4 border-black w-24 h-8 text-xxs text-white 
     hover:bg-red-700 hover:border-neutral-800 hover:translate-y-0.5 hover:font-semibold;

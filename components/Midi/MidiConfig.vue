@@ -1,5 +1,27 @@
 <template>
   <PageModal
+    name="No MIDI available"
+    :show="showNoMidiModal"
+  >
+    <template #body>
+      <p class="text-center">
+        There are currently no MIDI ports to connect to.  Please make sure that you allow your browser (Chromium based) MIDI permissions for this site and make sure that 
+        your MIDI devices are connected to your computer.
+      </p>
+      <p class="text-center pt-2">
+        If you don't have any MIDI devices you can access the demo...
+      </p>
+    </template>
+    <template #footer>
+      <div class="flex space-x-4 w-full justify-center">
+        <button @click="demoMode">
+          Demo mode 
+        </button>
+      </div>
+    </template>
+  </PageModal>
+
+  <PageModal
     name="MIDI Port"
     :show="showSetMidiPortModal"
   >
@@ -122,6 +144,28 @@
       name="MIDI output settings"
       class="col-span-1 settings"
     >
+      <div class="flex flex-col justify-center items-center">
+        <div class="text-xs">
+          Port
+        </div>
+        <select
+          id="midiPort"
+          v-model="midiPort"
+          name="midiPort"
+        >
+          <option
+            label="-- Select Midi Port --"
+            :value="-1"
+            selected
+          />
+          <option
+            v-for="port, index in midiPorts"
+            :key="index"
+            :label="port.name"
+            :value="index"
+          />
+        </select>
+      </div>
       <div class="flex flex-col gap-3 p-2">
         <div class="flex flex-col justify-center items-center">
           <div class="text-xs">
@@ -240,7 +284,8 @@ const showSavePatchModal = ref(false);
 const showLoadPatchModal = ref(false);
 const showCreatePatchModal = ref(false);
 
-const showSetMidiPortModal = ref(true);
+const showSetMidiPortModal = ref(false);
+const showNoMidiModal = ref(false);
 
 const props = defineProps({
   blink: {
@@ -258,6 +303,11 @@ const loadPatch = () => {
   currentPatch.value = patchToLoad.value;
   showLoadPatchModal.value = false;
 };
+
+const demoMode = () => {
+  midiPort.value = -999;
+  showNoMidiModal.value = false;
+}
 
 const createPatch = () => {
   showCreatePatchModal.value = false;
@@ -282,9 +332,11 @@ onNuxtReady(async () => {
         throw('No midi ports')
       }
 
+      showSetMidiPortModal.value = true;
+
     } catch (error) {
       midiLog.log("MIDI access failed!");
-      alert("Could not get MIDI access.\n");
+      showNoMidiModal.value = true;
     }
 });
 
@@ -294,7 +346,7 @@ watch(midiChannel, (channel) => {
 });
 
 watch(midiPort, (port) => {
-  if (port === -1) {
+  if (port === -1 || port === -999) {
     midiState.value.output = port;
   } else {
     midiState.value.output = midiPorts.value[port]
@@ -302,7 +354,6 @@ watch(midiPort, (port) => {
     showSetMidiPortModal.value = false;
   }
 });
-
 
 watch(currentPatch, (patch) => {
   deviceStore.getDevices[deviceStore.getCurrent] = patchStore.getPatches[deviceStore.getCurrent][patch]

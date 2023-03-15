@@ -22,7 +22,8 @@
         :cc-msg="parameter.cc_msg"
         :items="parameter.type === 'MidiSelect' ? parameter.items : []"
         :editable="parameter.type === 'MidiSelect' ? parameter.editable : false"
-        @midi-output="blinkIt()"
+        :parent="index"
+        @midi-output="midiOutput"
       />
     </MidiGroup>
   </div>
@@ -31,6 +32,10 @@
 <script setup lang="ts">
 import { ConcreteComponent } from 'vue';
 import { useDeviceStore } from '~~/store/devices';
+import { useMidiLogStore } from '~~/store/midilog';
+
+const midiLog = useMidiLogStore()
+const midi = useMidiState();
 
 const deviceStore = useDeviceStore();
 const route = useRoute();
@@ -51,7 +56,21 @@ const midiState = useMidiState();
 const navState = useNavState();
 
 const blink = ref(false);
-const blinkIt = () => {
+
+const midiOutput = (midiMessage) => {
+  const msg = [
+    midiMessage.status | midi.value.channel - 1,
+    midiMessage.data_one,
+    midiMessage.data_two
+  ];
+
+  // FIXME: -999 is an ugly hack for demo mode...
+  if (midi.value.output !== -999) {
+    midi.value.output.send(msg); // sends the message.
+    midiLog.log(`MIDI Out: [${msg}]`);
+  } else {
+    midiLog.log(`[DEMO MODE] MIDI Out: [${msg}]`);
+  }
   blink.value = !blink.value;
 }
 
