@@ -138,7 +138,7 @@
 
   <div
     v-if="midiPort !== -1"
-    class="grid md:grid-cols-4 gap-4 grid-flow-row-dense"
+    class="grid md:grid-cols-4 gap-4 pb-4 grid-flow-row-dense"
   >
     <MidiGroup
       name="MIDI output settings"
@@ -240,13 +240,18 @@
       name="MIDI log"
       class="col-span-2 log"
     >
-      <div class="overflow-y-scroll h-36 bg-neutral-400 p-4 text-xs font-mono">
+      <div
+        id="scroll"
+        ref="scroll"
+        class="overflow-y-scroll h-64 bg-neutral-300 px-4 py-2 border-4 border-black text-xs text-black font-mono"
+      >
         <p
           v-for="message, index in midiLog.messages"
           :key="index"
         >
           {{ message }}
         </p>
+        <div id="scroll-anchor" />
       </div>
     </MidiGroup>
   </div>
@@ -277,6 +282,7 @@ const midiPort = ref(-1);
 const currentPatch = ref('Default');
 const patchToLoad = ref(-1);
 const newPatchName = ref('');
+// const scroll = ref(null);
 
 const localBlink = ref(false);
 
@@ -353,6 +359,9 @@ watch(midiPort, (port) => {
     midiLog.log(`MIDI port ${midiPorts.value}`)
     showSetMidiPortModal.value = false;
   }
+
+  // console.log(scroll.value);
+  // scroll.value.scroll(0, 1);
 });
 
 watch(currentPatch, (patch) => {
@@ -379,4 +388,16 @@ watch(() => props.blink, () => {
     localBlink.value = false
   }, 150);
 });
+
 </script>
+
+<style scoped>
+#scroll * {
+  overflow-anchor: none;
+}
+
+#scroll-anchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+</style>

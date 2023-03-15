@@ -88,7 +88,7 @@ button.selected {
 }
 
 .midiGroup {
-  @apply relative p-6 pt-2 pb-2 mb-6 h-full border-4 border-black;
+  @apply relative px-6 pt-0 pb-8 border-4 border-black;
 }
 
 .midiGroup.nts-1 {

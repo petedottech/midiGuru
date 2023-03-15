@@ -4,7 +4,7 @@
   />
   <div
     v-if="midiState.output !== -1"
-    class="grid grid-cols-4 gap-4 grid-flow-row-dense pt-4"
+    class="grid grid-cols-4 gap-4 grid-flow-row-dense"
   >
     <MidiGroup
       v-for="controller, index in deviceStore.getDevices[synth].controllers"

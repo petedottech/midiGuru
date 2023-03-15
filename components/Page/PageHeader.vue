@@ -9,6 +9,10 @@
       v-else
       class="space-x-4"
     >
+      <img
+        class="h-8 md:h-12"
+        src="~/assets/mididin.svg"
+      >
       <!--NuxtLink to="/about">
         About
       </NuxtLink-->

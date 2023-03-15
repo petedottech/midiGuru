@@ -5,6 +5,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ['Nunito'],
+      mono: ['Space Mono'],
     },
     extend: {
       scale: {

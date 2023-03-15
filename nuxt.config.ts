@@ -18,7 +18,12 @@ export default defineNuxtConfig({
       ], */
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
+  ],
   css: ['@/assets/css/main.css'],
   tailwindcss: {},
   googleFonts: {
@@ -26,6 +31,7 @@ export default defineNuxtConfig({
     families: {
       // TODO: revisit these and consolodate
       Nunito: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      'Space Mono': [100, 200, 300, 400, 500, 600, 700, 800, 900],
     },
   },
   runtimeConfig: {
