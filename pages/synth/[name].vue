@@ -78,7 +78,7 @@ const midiOutput = (midiMessage) => {
   ];
 
   // FIXME: -999 is an ugly hack for demo mode...
-  if (globalStore.getMidiOutput !== -999) {
+  if (globalStore.getMidiOutput.name !== 'Demo') {
     globalStore.getMidiOutput.send(msg); // sends the message.
     midiLog.log(`MIDI Out: [${msg}]`);
   } else {

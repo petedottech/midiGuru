@@ -16,7 +16,7 @@
       </NuxtLink> web app that will allow you to eventually build custom web based MIDI controllers.
     </p>
     <p class="pt-2">
-      In the meantime I've build one controller for the excellent <NuxtLink to="">
+      In the meantime I've build one controller for the excellent <NuxtLink to="/synth/nts-1">
         KORG NTS-1
       </NuxtLink> with the KORG Volca Drum patch editor coming soon.
     </p>
@@ -27,8 +27,8 @@
       class="box"
     >
       <MidiGroup
-        name="."
-        class="nts-1"
+        name="&nbsp;"
+        class="nts-1 h-32"
       >
         <h2 class="text-center text-2xl">
           KORG NTS-1
@@ -40,8 +40,8 @@
       class="box"
     -->
     <MidiGroup
-      name="Coming soon"
-      class="volca-drum"
+      name="&nbsp;"
+      class="volca-drum h-32"
     >
       <h2 class="text-center text-2xl">
         KORG Volca Drum

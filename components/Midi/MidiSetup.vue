@@ -5,7 +5,10 @@
   >
     <template #body>
       <p class="text-center">
-        There are currently no MIDI ports to connect to.  Please make sure that you allow your browser (Chromium based) MIDI permissions for this site and make sure that 
+        There are currently no MIDI ports to connect to.  Please make sure that you allow your browser 
+        (Chromium based or Firefox, see <NuxtLink to="https://caniuse.com/midi">
+          https://caniuse.com/midi
+        </NuxtLink>) MIDI permissions for this site and make sure that 
         your MIDI devices are connected to your computer.
       </p>
       <p class="text-center pt-2">
@@ -69,7 +72,7 @@ const showSetMidiPortModal = ref(false);
 const showNoMidiModal = ref(false);
 
 const demoMode = () => {
-  midiPort.value = -999;
+  midiPort.value = { name: 'Demo' };
   showNoMidiModal.value = false;
 }
 
@@ -89,14 +92,13 @@ onNuxtReady(async () => {
       showSetMidiPortModal.value = true;
 
     } catch (error) {
-      console.log(error);
       midiLog.log("MIDI access failed!");
       showNoMidiModal.value = true;
     }
 });
 
 watch(midiPort, (port) => {
-  if (port === -1 || port === -999) {
+  if (port === -1 || port.name === 'Demo') {
     globalStore.setMidiOutput(port);
   } else {
     globalStore.setMidiOutput(midiPorts.value[port]);

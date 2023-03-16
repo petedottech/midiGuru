@@ -60,6 +60,9 @@ input[type=range] {
   margin: 0px 0;
   width: 100%;
   background: none; 
+
+  /* fix for FF unable to apply focus style bug  */
+  /* border: 1px solid white;  */
 }
 input[type=range]:focus {
   outline: none;
@@ -68,7 +71,6 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 5px;
   cursor: pointer;
-  animate: 0.2s;
   background: black;
 }
 input[type=range]::-webkit-slider-thumb {
@@ -83,4 +85,40 @@ input[type=range]::-webkit-slider-thumb {
   margin-top: -7.5px;
   @apply bg-red-800;
 }
+
+
+/* Firefox */
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: black;
+    border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 20px;
+    width: 8px;
+    cursor: pointer;
+    border-radius: 0;
+    @apply bg-red-800;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+input[type=range]:focus::-moz-range-track {
+    background: black;
+}
+
+
+
+
+
+
 </style>
