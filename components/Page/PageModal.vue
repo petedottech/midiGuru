@@ -7,7 +7,7 @@
       <!-- Hack cause currently MidiGroup has 100% height... -->
       <div>
         <MidiGroup
-          class="bg-red-500 w-128"
+          class="bg-red-500 mx-2 max-w-xl"
           :name="props.name"
         >
           <div class="flex flex-col h-full justify-between pb-4 space-y-6 pt-4">
