@@ -1,5 +1,5 @@
 <template>
-  <section class="max-w-screen-lg m-auto py-10">
+  <section class="max-w-screen-lg m-auto pb-10 md:pt-10">
     <h1 class="text-center text-5xl">
       Welcome to <span class="font-semibold"><strong>midi</strong>Guru</span>
     </h1>
