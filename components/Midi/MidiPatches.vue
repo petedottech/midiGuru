@@ -1,89 +1,7 @@
 <template>
-  <PageModal
-    name="Overwrite patch?"
-    :show="showSavePatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        This will overwrite the settings in '{{ patchStore.getCurrent }}'
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="savePatch">
-          Save Patch
-        </button>
-        <button @click="showSavePatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
-  <PageModal
-    name="Load patch"
-    :show="showLoadPatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        <select
-          id="patch"
-          v-model="patchToLoad"
-          name="patch"
-        >
-          <option
-            label="-- Select patch --"
-            :value="-1"
-            selected
-          />
-          <option
-            v-for="patch, index in patchStore.getPatches[deviceStore.getCurrent]"
-            :key="index"
-            :label="index"
-            :value="index"
-          />
-        </select>
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="loadPatch">
-          Load patch
-        </button>
-        <button @click="showLoadPatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
-  <PageModal
-    name="Create new patch"
-    :show="showCreatePatchModal"
-  >
-    <template #body>
-      <div class="text-center">
-        <input
-          v-model="newPatchName"
-          type="text"
-        > 
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex space-x-4 w-full justify-center">
-        <button @click="createPatch">
-          Create Patch
-        </button>
-        <button @click="showCreatePatchModal = false">
-          Cancel 
-        </button>
-      </div>
-    </template>
-  </PageModal>
-
   <MidiGroup
     name="Patches"
-    class="col-span-1 settings"
+    class="settings"
   >
     <div class="flex flex-col gap-3 p-2">
       <div class="flex flex-wrap justify-center w-full gap-1">
@@ -118,6 +36,87 @@
         </button>
       </div>
     </div>
+    <PageModal
+      name="Overwrite patch?"
+      :show="showSavePatchModal"
+    >
+      <template #body>
+        <div class="text-center">
+          This will overwrite the settings in '{{ patchStore.getCurrent }}'
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex space-x-4 w-full justify-center">
+          <button @click="savePatch">
+            Save Patch
+          </button>
+          <button @click="showSavePatchModal = false">
+            Cancel 
+          </button>
+        </div>
+      </template>
+    </PageModal>
+
+    <PageModal
+      name="Load patch"
+      :show="showLoadPatchModal"
+    >
+      <template #body>
+        <div class="text-center">
+          <select
+            id="patch"
+            v-model="patchToLoad"
+            name="patch"
+          >
+            <option
+              label="-- Select patch --"
+              :value="-1"
+              selected
+            />
+            <option
+              v-for="patch, index in patchStore.getPatches[deviceStore.getCurrent]"
+              :key="index"
+              :label="index"
+              :value="index"
+            />
+          </select>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex space-x-4 w-full justify-center">
+          <button @click="loadPatch">
+            Load patch
+          </button>
+          <button @click="showLoadPatchModal = false">
+            Cancel 
+          </button>
+        </div>
+      </template>
+    </PageModal>
+
+    <PageModal
+      name="Create new patch"
+      :show="showCreatePatchModal"
+    >
+      <template #body>
+        <div class="text-center">
+          <input
+            v-model="newPatchName"
+            type="text"
+          > 
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex space-x-4 w-full justify-center">
+          <button @click="createPatch">
+            Create Patch
+          </button>
+          <button @click="showCreatePatchModal = false">
+            Cancel 
+          </button>
+        </div>
+      </template>
+    </PageModal>
   </MidiGroup>
 </template>
 

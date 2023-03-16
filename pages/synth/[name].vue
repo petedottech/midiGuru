@@ -6,9 +6,13 @@
   >
     <MidiConfig
       :blink="blink"
+      class="span-1"
     />
-    <MidiPatches @midi-output="midiOutput" />
-    <MidiLogger />
+    <MidiPatches
+      class="span-1"
+      @midi-output="midiOutput"
+    />
+    <MidiLogger class="span-2" />
     <MidiGroup
       v-for="controller, index in deviceStore.getDevices[deviceStore.getCurrent].controllers"
       :key="index"
@@ -29,9 +33,6 @@
         @midi-output="midiOutput"
       />
     </MidiGroup>
-    <div
-      class="col-span-4"
-    />
   </div>
   <div
     v-else

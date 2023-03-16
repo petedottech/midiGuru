@@ -114,4 +114,21 @@ button.selected {
 a {
   @apply underline hover:no-underline;
 }
+
+
+.midiGroup.span-1 {
+  @apply col-span-4 md:col-span-2 xl:col-span-1;
+}
+
+.midiGroup.span-2 {
+  @apply col-span-4 md:col-span-4 xl:col-span-2;
+}
+
+.midiGroup.span-3 {
+  @apply col-span-4 md:col-span-4 xl:col-span-3;
+}
+
+.midiGroup.span-4 {
+  @apply col-span-4 md:col-span-4;
+}
 </style>

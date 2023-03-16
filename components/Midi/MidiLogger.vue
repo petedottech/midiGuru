@@ -1,8 +1,7 @@
-
 <template>
   <MidiGroup
     name="MIDI log"
-    class="col-span-2 settings"
+    class="settings"
   >
     <div
       id="scroll"

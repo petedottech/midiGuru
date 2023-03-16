@@ -1,7 +1,7 @@
 <template>
   <MidiGroup
     name="MIDI output settings"
-    class="col-span-1 settings"
+    class="settings"
   >
     <div class="flex flex-col justify-center items-center">
       <div class="text-xs">

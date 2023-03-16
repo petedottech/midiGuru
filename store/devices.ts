@@ -23,7 +23,7 @@ export const useDeviceStore = defineStore({
           name: 'KORG NTS-1',
           controllers: {
             Ocsilllator: {
-              width: 'col-span-2',
+              width: 'span-2',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -55,7 +55,7 @@ export const useDeviceStore = defineStore({
               },
             },
             Filter: {
-              width: 'col-span-2',
+              width: 'span-2',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -86,7 +86,7 @@ export const useDeviceStore = defineStore({
               },
             },
             EG: {
-              width: 'col-span-1',
+              width: 'span-1',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -117,7 +117,7 @@ export const useDeviceStore = defineStore({
               },
             },
             Modulation: {
-              width: 'col-span-1',
+              width: 'span-1',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -139,7 +139,7 @@ export const useDeviceStore = defineStore({
               },
             },
             Delay: {
-              width: 'col-span-1',
+              width: 'span-1',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -166,7 +166,7 @@ export const useDeviceStore = defineStore({
               },
             },
             Reverb: {
-              width: 'col-span-1',
+              width: 'span-1',
               parameters: {
                 Type: {
                   type: 'MidiSelect',
@@ -193,7 +193,7 @@ export const useDeviceStore = defineStore({
               },
             },
             Arp: {
-              width: 'col-span-4',
+              width: 'span-4',
               parameters: {
                 Pattern: {
                   type: 'MidiSelect',
@@ -221,7 +221,7 @@ export const useDeviceStore = defineStore({
           name: 'KORG Volca Drum',
           controllers: {
             'Wave guide': {
-              width: 'col-span-4',
+              width: 'span-4',
               parameters: {
                 'Model type': {
                   type: 'MidiSelect',
@@ -247,7 +247,7 @@ export const useDeviceStore = defineStore({
               },
             },
             'Part 1 - Layer 1': {
-              width: 'col-span-2',
+              width: 'span-2',
               parameters: {
                 'Sound source': {
                   type: 'MidiSelect',
@@ -300,7 +300,7 @@ export const useDeviceStore = defineStore({
               },
             },
             'Part 1 - Layer 2': {
-              width: 'col-span-2',
+              width: 'span-2',
               parameters: {
                 'Sound source': {
                   type: 'MidiSelect',
@@ -353,7 +353,7 @@ export const useDeviceStore = defineStore({
               },
             },
             'Part 1 - Processing': {
-              width: 'col-span-4',
+              width: 'span-4',
               parameters: {
                 'Wave guide send': {
                   type: 'MidiRange',
