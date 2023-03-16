@@ -28,9 +28,9 @@
     >
       <MidiGroup
         name="&nbsp;"
-        class="nts-1 h-32"
+        class="nts-1 h-40 md:h-32"
       >
-        <h2 class="text-center text-2xl">
+        <h2 class="text-center text-lg md:text-2xl">
           KORG NTS-1
         </h2>
       </MidiGroup>
@@ -41,9 +41,9 @@
     -->
     <MidiGroup
       name="&nbsp;"
-      class="volca-drum h-32"
+      class="volca-drum h-40 md:h-32"
     >
-      <h2 class="text-center text-2xl">
+      <h2 class="text-center text-lg md:text-2xl">
         KORG Volca Drum
       </h2>
     </MidiGroup>
