@@ -1,18 +1,30 @@
 <template>
   <div class="w-full flex items-center justify-between">
-    <div v-if="globalStore.getPageTitle.length">
-      <h1 class="text-2xl md:text-5xl font-semibold">
-        {{ globalStore.getPageTitle }} 
-      </h1>
-    </div>
-    <div
-      v-else
-      class="space-x-4"
-    >
-      <img
-        class="h-8 md:h-12"
-        src="~/assets/mididin.svg"
+    <div class="flex justify-center items-center space-x-4">
+      <div
+        v-if="globalStore.getPageTitle.length"
       >
+        <h1 class="text-2xl md:text-5xl font-semibold">
+          {{ globalStore.getPageTitle }} 
+        </h1>
+      </div>
+      <div
+        v-else
+        class="space-x-4"
+      >
+        <img
+          class="h-8 md:h-12"
+          src="~/assets/mididin.svg"
+        >
+      </div>
+      <a
+        href="https://www.buymeacoffee.com/petedottech"
+        target="_blank"
+      ><img
+        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+        alt="Buy Me A Coffee"
+        style="height: 60px !important;width: 217px !important;"
+      ></a>
     </div>
     <NuxtLink
       to="/"
