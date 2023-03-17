@@ -22,13 +22,13 @@
 </template>
 
 <script setup lang="ts">
-// import { useState, trackRouter } from "vue-gtag-next";
-import { trackRouter } from "vue-gtag-next";
-// const { isEnabled } = useState();
+import { useState, trackRouter } from "vue-gtag-next";
+// import { trackRouter } from "vue-gtag-next";
+const { isEnabled } = useState();
 const cookieConsent = useCookie('cookie-consent');
 
 if (cookieConsent.value) {
-  // isEnabled.value = true;
+  isEnabled.value = true;
   trackRouter(useRouter())
 }
 
