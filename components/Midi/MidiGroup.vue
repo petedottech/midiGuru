@@ -14,11 +14,12 @@
 
 <script setup lang="ts">
 
-defineProps({
-    name: {
-        type: String,
-        default: 'No name',
-    }
+interface Props {
+  name?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+  name: () => 'No name',
 });
 
 </script>

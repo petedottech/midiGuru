@@ -22,12 +22,13 @@
 </template>
 
 <script setup lang="ts">
-import { useState, trackRouter } from "vue-gtag-next";
-const { isEnabled } = useState();
+// import { useState, trackRouter } from "vue-gtag-next";
+import { trackRouter } from "vue-gtag-next";
+// const { isEnabled } = useState();
 const cookieConsent = useCookie('cookie-consent');
 
 if (cookieConsent.value) {
-  isEnabled.value = true;
+  // isEnabled.value = true;
   trackRouter(useRouter())
 }
 
@@ -72,8 +73,10 @@ input[type=text]:disabled {
 
 button {
   @apply bg-red-800 border-4 border-black w-24 h-8 text-xxs text-white 
-    hover:bg-red-700 hover:border-neutral-800 hover:translate-y-0.5 hover:font-semibold;
+    hover:bg-red-700 hover:border-neutral-800 hover:translate-y-0.5 hover:font-semibold
+    disabled:bg-neutral-400;
 }
+
 
 button.small {
   @apply w-9;

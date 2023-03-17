@@ -10,7 +10,7 @@
       <input
         type="text"
         disabled
-        :value="globalStore.getMidiOutput.name"
+        :value="globalStore.getMidiOutput ? globalStore.getMidiOutput.name : 'Demo mode'"
       >
     </div>
     <div class="flex flex-col gap-3 p-2">
@@ -68,7 +68,8 @@ const setMidiChannel = (channel: number) => {
   midiLog.log(`MIDI (global) channel ${channel}`)
 }
 
-let blinkTimeout = -1;
+let blinkTimeout: ReturnType<typeof setTimeout>;
+
 watch(() => props.blink, () => {
   clearTimeout(blinkTimeout);
   localBlink.value = true;

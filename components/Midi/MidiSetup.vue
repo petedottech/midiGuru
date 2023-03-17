@@ -35,9 +35,9 @@
             Port
           </div>
           <select
-            id="midiPort"
-            v-model="midiPort"
-            name="midiPort"
+            id="midiOutput"
+            v-model="midiOutput"
+            name="midiOutput"
           >
             <option
               label="-- Select Midi Port --"
@@ -45,7 +45,7 @@
               selected
             />
             <option
-              v-for="port, index in midiPorts"
+              v-for="port, index in midiOutputs"
               :key="index"
               :label="port.name"
               :value="index"
@@ -65,26 +65,27 @@ import { useGlobalStore } from '~~/store/global';
 const globalStore = useGlobalStore();
 const midiLog = useMidiLogStore();
 
-const midiPorts = ref(null);
-const midiPort = ref(-1);
+const midiOutputs = ref<Array<WebMidi.MIDIOutput>>();
+const midiOutput = ref<number>(-1);
 
 const showSetMidiPortModal = ref(false);
 const showNoMidiModal = ref(false);
 
 const demoMode = () => {
-  midiPort.value = { name: 'Demo' };
+  globalStore.setIsDemo(true);
   showNoMidiModal.value = false;
 }
 
 onNuxtReady(async () => {
     try {
-      const midiAccess = await navigator.requestMIDIAccess( { sysex: true });
+      // FIX the type workaround below...
+      const midiAccess: WebMidi.MIDIAccess = await navigator['requestMIDIAccess']( { sysex: true });
 
       midiLog.log("MIDI ready!");
       globalStore.setMidiAccess(true);
-      midiPorts.value = new Array(...midiAccess.outputs.values());
+      midiOutputs.value = new Array(...midiAccess.outputs.values());
 
-      if (midiPorts.value.length < 1){
+      if (midiOutputs.value.length < 1){
         midiLog.log("No MIDI ports found");
         throw('No midi ports');
       }
@@ -97,12 +98,10 @@ onNuxtReady(async () => {
     }
 });
 
-watch(midiPort, (port) => {
-  if (port === -1 || port.name === 'Demo') {
-    globalStore.setMidiOutput(port);
-  } else {
-    globalStore.setMidiOutput(midiPorts.value[port]);
-    midiLog.log(`MIDI port ${midiPorts.value}`)
+watch(midiOutput, (port) => {
+  if (midiOutputs.value && port !== undefined) {
+    globalStore.setMidiOutput(midiOutputs.value[port]);
+    midiLog.log(`MIDI port ${midiOutputs.value}`)
     showSetMidiPortModal.value = false;
   }
 });

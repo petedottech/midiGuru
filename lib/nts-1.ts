@@ -28,14 +28,14 @@ const arpLengths = rangeValues([
 ]);
 
 const ocsillators = rangeObjectValues([
-  { name: 'Saw (SAW)', editable: false },
-  { name: 'Triangle (tr1)', editable: false },
-  { name: 'Square (s9r)', editable: false },
-  { name: 'VPM (UPN)', editable: false },
-  { name: 'Waves', editable: true },
-  { name: 'J6', editable: true },
-  { name: 'Proba-b', editable: true },
-  { name: 'Volca Bass', editable: true },
+  { name: 'Saw (SAW)', editable: false, value: 0 },
+  { name: 'Triangle (tr1)', editable: false, value: 0 },
+  { name: 'Square (s9r)', editable: false, value: 0 },
+  { name: 'VPM (UPN)', editable: false, value: 0 },
+  { name: 'Waves', editable: true, value: 0 },
+  //  { name: 'J6', editable: true, value: 0 },
+  //  { name: 'Proba-b', editable: true, value: 0 },
+  //  { name: 'Volca Bass', editable: true, value: 0 },
 ]);
 
 const filters = rangeValues([
@@ -51,29 +51,29 @@ const filters = rangeValues([
 const egs = rangeValues(['ADSR', 'AHR', 'AR', 'AR Loop', 'Open']);
 
 const modulations = rangeObjectValues([
-  { name: 'Off', editable: false },
-  { name: 'Chorus', editable: false },
-  { name: 'Ensemnble', editable: false },
-  { name: 'Phaser', editable: false },
-  { name: 'Flanger', editable: false },
+  { name: 'Off', editable: false, value: 0 },
+  { name: 'Chorus', editable: false, value: 0 },
+  { name: 'Ensemnble', editable: false, value: 0 },
+  { name: 'Phaser', editable: false, value: 0 },
+  { name: 'Flanger', editable: false, value: 0 },
 ]);
 
 const delays = rangeObjectValues([
-  { name: 'Off', editable: false },
-  { name: 'Stereo', editable: false },
-  { name: 'Mono', editable: false },
-  { name: 'Ping Pong', editable: false },
-  { name: 'High Pass', editable: false },
-  { name: 'Tape', editable: false },
+  { name: 'Off', editable: false, value: 0 },
+  { name: 'Stereo', editable: false, value: 0 },
+  { name: 'Mono', editable: false, value: 0 },
+  { name: 'Ping Pong', editable: false, value: 0 },
+  { name: 'High Pass', editable: false, value: 0 },
+  { name: 'Tape', editable: false, value: 0 },
 ]);
 
 const reverbs = rangeObjectValues([
-  { name: 'Off', editable: false },
-  { name: 'Hall', editable: false },
-  { name: 'Plate', editable: false },
-  { name: 'Space', editable: false },
-  { name: 'Riser', editable: false },
-  { name: 'Submarine', editable: false },
+  { name: 'Off', editable: false, value: 0 },
+  { name: 'Hall', editable: false, value: 0 },
+  { name: 'Plate', editable: false, value: 0 },
+  { name: 'Space', editable: false, value: 0 },
+  { name: 'Riser', editable: false, value: 0 },
+  { name: 'Submarine', editable: false, value: 0 },
 ]);
 
 const arpPatterns = rangeValues([

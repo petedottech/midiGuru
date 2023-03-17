@@ -6,7 +6,7 @@
     <template #body>
       <div class="text-center space-y-2">
         <input
-          v-for="item, index in items.filter(i => !i.editable)"
+          v-for="item, index in items.filter((i: MidiRange):boolean => !i.editable)"
           :key="index"
           type="text"
           :value="`[Built in] ${item.name}`"
@@ -76,13 +76,12 @@
 
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
-import { usePatchStore } from '~~/store/patches';
 import { useDeviceStore } from '~~/store/devices';
+import { MidiRange } from '~~/types/types';
 
 import { rangeObjectValues } from '~~/utils/midi';
 
 const midiLog = useMidiLogStore()
-const patchStore = usePatchStore();
 const deviceStore = useDeviceStore();
 const emit = defineEmits(['midiOutput', 'update:modelValue'])
 const props = defineProps({
@@ -107,14 +106,14 @@ const props = defineProps({
         required: true
     },
     items: {
-      type: Array,
+      type: Array<MidiRange>,
       default: () => [],
     },
 });
 
 const showEditMidiSelectModal = ref(false);
 const selected = ref(0);
-const localItems = ref([]);
+const localItems = ref<Array<string>>([]);
 const addedItem = ref('');
 
 const editItems = () => {
@@ -122,7 +121,7 @@ const editItems = () => {
   showEditMidiSelectModal.value = true;
 }
 
-const removeLocalItem = index => {
+const removeLocalItem = (index: number) => {
  localItems.value.splice(index, 1);
 }
 
@@ -135,10 +134,7 @@ const updateItems = () => {
   const result: any[] = [...props.items.filter(i => !i.editable).map(i => ({ name: i.name, editable: false}))];
   const updatedItems = rangeObjectValues(result.concat(localItems.value.map(i => ({ name: i, editable: true }))));
 
-  patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent].controllers[props.parent].parameters[props.name].items = updatedItems;
-  // HACKY
   deviceStore.getDevices[deviceStore.getCurrent].controllers[props.parent].parameters[props.name].items = updatedItems;
-
   showEditMidiSelectModal.value = false;
 }
 
@@ -150,9 +146,11 @@ watch(() => props.modelValue, (updated, old) => {
 });
 
 watch(selected, (selected) => {
-  const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
-  midiLog.log(`${props.parent} ${props.name} ${props.items[selected].name} ${props.ccMsg} ${props.items[selected].value}`);
-  emit('midiOutput', midiMsg);
-  emit('update:modelValue', props.items[selected].value)
+  if (selected !== -1) {
+    const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
+    midiLog.log(`${props.parent} ${props.name} ${props.items[selected].name} ${props.ccMsg} ${props.items[selected].value}`);
+    emit('midiOutput', midiMsg);
+    emit('update:modelValue', props.items[selected].value)
+  }
 })
 </script>

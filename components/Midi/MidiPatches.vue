@@ -7,6 +7,7 @@
       <div class="flex flex-wrap justify-center w-full gap-1">
         <button
           class="btn"
+          :disabled="globalStore.getCurrentPatch === 'Default'"
           @click="showSavePatchModal = true"
         >
           Save Patch
@@ -19,13 +20,13 @@
         </button>
         <button
           class="btn"
-          @click="showCreatePatchModal = true"
+          @click="showCreatePatchModal = true;"
         >
           Create Patch
         </button>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
-        <h1>Current patch: {{ patchStore.getCurrent }}</h1>
+        <h1>Current patch: {{ globalStore.getCurrentPatch }}</h1>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
         <button
@@ -37,12 +38,12 @@
       </div>
     </div>
     <PageModal
-      name="Overwrite patch?"
       :show="showSavePatchModal"
+      name="Overwrite patch?"
     >
       <template #body>
         <div class="text-center">
-          This will overwrite the settings in '{{ patchStore.getCurrent }}'
+          This will overwrite the settings in '{{ globalStore.getCurrentPatch }}'
         </div>
       </template>
       <template #footer>
@@ -101,7 +102,9 @@
       <template #body>
         <div class="text-center">
           <input
+            ref="patchName"
             v-model="newPatchName"
+            autofocus
             type="text"
           > 
         </div>
@@ -121,39 +124,65 @@
 </template>
 
 <script setup>
+import { useGlobalStore } from '~~/store/global';
 import { useDeviceStore } from '~~/store/devices';
 import { usePatchStore } from '~~/store/patches';
+import { useMidiLogStore } from '~~/store/midilog';
 
 const emit = defineEmits(['midiOutput']);
 
 const patchToLoad = ref(-1);
 const newPatchName = ref('');
+
 const deviceStore = useDeviceStore();
 const patchStore = usePatchStore();
+const globalStore = useGlobalStore();
+const midiLog = useMidiLogStore()
+
+const patchName = ref(null)
 
 const showSavePatchModal = ref(false);
 const showLoadPatchModal = ref(false);
 const showCreatePatchModal = ref(false);
 
+
+watch(patchName, (patchName) => {
+  if(patchName) {
+    patchName.focus();
+  }
+});
+
+// Saves the current device as a patch...
 const savePatch = () => {
-  patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent] = deviceStore.getDevices[deviceStore.getCurrent];
+  midiLog.log(`Saving patch: ${deviceStore.getCurrent}`);
+  patchStore.getPatches[deviceStore.getCurrent][globalStore.getCurrentPatch] = JSON.parse(JSON.stringify(deviceStore.getDevices[deviceStore.getCurrent]));
   showSavePatchModal.value = false;
+
 };
 
+// Loads the patch as a device...
 const loadPatch = () => {
-  patchStore.setCurrent = patchToLoad.value;
-  deviceStore.getDevices[deviceStore.getCurrent] = patchStore.getPatches[deviceStore.getCurrent][patchStore.getCurrent]
+  globalStore.setCurrentPatch(patchToLoad.value);
+
+  deviceStore.getDevices[deviceStore.getCurrent] = JSON.parse(JSON.stringify(patchStore.getPatches[deviceStore.getCurrent][patchToLoad.value]));
+
+  midiLog.log(`Loading patch: ${patchToLoad.value}`);
+
+  sendPanel();
   showLoadPatchModal.value = false;
 };
 
+// Creates a new patch from the current device settings
 const createPatch = () => {
   showCreatePatchModal.value = false;
   // Check that the name does't already exits...
-  patchStore.getPatches[deviceStore.getCurrent][newPatchName.value] = deviceStore.getDevices[deviceStore.getCurrent];
-  patchStore.setCurrent = patchToLoad.value;
+
+  patchStore.getPatches[deviceStore.getCurrent][newPatchName.value] = JSON.parse(JSON.stringify(deviceStore.getDevices[deviceStore.getCurrent]));
+
+  globalStore.setCurrentPatch(newPatchName.value);
+  midiLog.log(`Creating patch: ${deviceStore.getCurrent}`);
   newPatchName.value = '';
 };
-
 
 const sendPanel = () => {
   for (const controller in deviceStore.getDevices[deviceStore.getCurrent]['controllers']) {
@@ -164,5 +193,11 @@ const sendPanel = () => {
     }
   }
 };
+
+onMounted(() => {
+  globalStore.setPageTitle(deviceStore.getDevices[deviceStore.getCurrent].name);
+
+  patchStore.getPatches[deviceStore.getCurrent]['Default'] = JSON.parse(JSON.stringify(deviceStore.getDevices[deviceStore.getCurrent]));
+});
 
 </script>

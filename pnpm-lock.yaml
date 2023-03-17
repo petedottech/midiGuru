@@ -7,6 +7,7 @@ specifiers:
   '@pinia/nuxt': ^0.4.7
   '@tailwindcss/forms': ^0.5.3
   '@tailwindcss/typography': ^0.5.9
+  '@types/webmidi': ^2.0.7
   '@typescript-eslint/eslint-plugin': ^5.53.0
   '@typescript-eslint/parser': ^5.53.0
   eslint: ^8.34.0
@@ -27,6 +28,7 @@ devDependencies:
   '@pinia-plugin-persistedstate/nuxt': 1.0.0_2fa6k6uov4i2t7fhwaa7f3r2li
   '@tailwindcss/forms': 0.5.3
   '@tailwindcss/typography': 0.5.9
+  '@types/webmidi': 2.0.7
   '@typescript-eslint/eslint-plugin': 5.54.1_mlk7dnz565t663n4razh6a6v6i
   '@typescript-eslint/parser': 5.54.1_ycpbpc6yetojsgtrx3mwntkhsu
   eslint: 8.35.0
@@ -1745,6 +1747,10 @@ packages:
       '@types/node': 18.15.0
     dev: true
     optional: true
+
+  /@types/webmidi/2.0.7:
+    resolution: {integrity: sha512-BMVefNAum/swSmQJdTbRWBuDPeWT7fHAZEzmtY6eBl1ObvkWVzh39VvAFC8v9n7Y5XoOpWmeYzyUUVfmpq3ggQ==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin/5.54.1_mlk7dnz565t663n4razh6a6v6i:
     resolution: {integrity: sha512-a2RQAkosH3d3ZIV08s3DcL/mcGc2M/UC528VkPULFxR9VnVPT8pBu0IyBAJJmVsCmhVfwQX1v6q+QGnmSe1bew==}

@@ -1,7 +1,7 @@
 <template>
   <MidiSetup />
   <div
-    v-if="globalStore.getMidiOutput !== -1"
+    v-if="globalStore.getMidiOutput || globalStore.isDemo"
     class="grid grid-cols-4 gap-4 grid-flow-row-dense"
   >
     <MidiConfig
@@ -14,9 +14,9 @@
     />
     <MidiLogger class="span-2" />
     <MidiGroup
-      v-for="controller, index in deviceStore.getDevices[deviceStore.getCurrent].controllers"
+      v-for="(controller, key, index) in deviceStore.getDevices[deviceStore.getCurrent].controllers"
       :key="index"
-      :name="index"
+      :name="key"
       class="nts-1"
       :class="controller.width"
     >
@@ -29,7 +29,7 @@
         :cc-msg="parameter.cc_msg"
         :items="parameter.type === 'MidiSelect' ? parameter.items : []"
         :editable="parameter.type === 'MidiSelect' ? parameter.editable : false"
-        :parent="index"
+        :parent="key"
         @midi-output="midiOutput"
       />
     </MidiGroup>
@@ -45,7 +45,6 @@
 </template>
   
 <script setup lang="ts">
-import { ConcreteComponent } from 'vue';
 import { useDeviceStore } from '~~/store/devices';
 import { useMidiLogStore } from '~~/store/midilog';
 import { useGlobalStore } from '~~/store/global';
@@ -58,27 +57,27 @@ const deviceStore = useDeviceStore();
 
 const route = useRoute();
 
-interface MidiElements {
-  name: string;
-  value: ConcreteComponent;
-}
-
-const midiElements : MidiElements = {
+const midiElements = {
   'MidiRange': resolveComponent('MidiRange'),
   'MidiSelect': resolveComponent('MidiSelect'),
 };
 
 const blink = ref(false);
 
-const midiOutput = (midiMessage) => {
+interface MidiMessage {
+  status: number;
+  data_one: number;
+  data_two: number;
+}
+
+const midiOutput = (midiMessage: MidiMessage) => {
   const msg = [
     midiMessage.status | patchStore.getMidiChannel - 1,
     midiMessage.data_one,
     midiMessage.data_two
   ];
 
-  // FIXME: -999 is an ugly hack for demo mode...
-  if (globalStore.getMidiOutput.name !== 'Demo') {
+  if (globalStore.getMidiOutput) {
     globalStore.getMidiOutput.send(msg); // sends the message.
     midiLog.log(`MIDI Out: [${msg}]`);
   } else {
@@ -87,10 +86,11 @@ const midiOutput = (midiMessage) => {
   blink.value = !blink.value;
 }
 
-onMounted(() => {
-  const synth = route.params.name;
-  globalStore.setPageTitle(deviceStore.getDevices[synth].name);
+onBeforeMount(() => {
+  const synth = route.params.name as string;
   deviceStore.setCurrent(synth);
+
+  globalStore.setPageTitle(deviceStore.getDevices[synth].name);
 });
 
 </script>

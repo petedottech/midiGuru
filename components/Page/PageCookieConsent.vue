@@ -24,8 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { useState, trackRouter } from "vue-gtag-next";
-const { isEnabled } = useState();
+import { trackRouter } from "vue-gtag-next";
+// import { useState, trackRouter } from "vue-gtag-next";
+// const { isEnabled } = useState();
 
 const today = new Date();
 today.setFullYear(today.getFullYear() + 1);
@@ -34,9 +35,7 @@ const cookieConsent = useCookie('cookie-consent', { expires: today })
 const acceptCookies = () => {
   console.log('accept cookies')
   cookieConsent.value = 'true';
-  console.log(cookieConsent)
-  console.log(isEnabled)
-  isEnabled.value = true;
+  // isEnabled.value = true;
   trackRouter(useRouter())
 }
 </script>  
