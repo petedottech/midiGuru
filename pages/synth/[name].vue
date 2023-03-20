@@ -79,10 +79,7 @@ const midiElements = {
   'MidiSelect': resolveComponent('MidiSelect'),
 };
 
-console.log(patchStore.getDeviceConfig)
-console.log(deviceStore)
-
-const showInstructions = ref(false); // ref(patchStore.getDeviceConfig[deviceStore.getCurrent].showInstructions);
+const showInstructions = ref(true);
 
 const toggleInstructions = () => {
   showInstructions.value = !showInstructions.value;

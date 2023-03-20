@@ -39,7 +39,6 @@ interface MidiDevice {
 
 interface MidiDeviceInfos {
   name: string;
-  info: string;
 }
 
 interface MidiDeviceInfo {

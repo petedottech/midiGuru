@@ -23,7 +23,6 @@ export const useDeviceStore = defineStore({
       deviceInfo: {
         'nts-1': {
           name: 'KORG NTS-1',
-          info: '## Some markdown text?',
         },
       } as MidiDeviceInfo,
       devices: {
