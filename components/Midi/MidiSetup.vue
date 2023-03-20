@@ -61,9 +61,11 @@
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
 import { useGlobalStore } from '~~/store/global';
+import { usePatchStore } from '~~/store/patches';
 
 const globalStore = useGlobalStore();
 const midiLog = useMidiLogStore();
+const patchStore = usePatchStore();
 
 const midiOutputs = ref<Array<WebMidi.MIDIOutput>>();
 const midiOutput = ref<number>(-1);
@@ -101,7 +103,9 @@ onNuxtReady(async () => {
 watch(midiOutput, (port) => {
   if (midiOutputs.value && port !== undefined) {
     globalStore.setMidiOutput(midiOutputs.value[port]);
-    midiLog.log(`MIDI port ${midiOutputs.value}`)
+    
+    midiLog.log(`MIDI port ${midiOutputs.value[port].name}`);
+    midiLog.log(`MIDI channel ${patchStore.getMidiChannel}`);
     showSetMidiPortModal.value = false;
   }
 });

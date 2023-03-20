@@ -20,7 +20,9 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/tailwindcss',
+    '@tailwindcss/typography',
     '@nuxtjs/google-fonts',
+    '@nuxt/content',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
   ],

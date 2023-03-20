@@ -6,9 +6,19 @@
   >
     <MidiGroup
       name="Instructions"
-      class="bg-yellow-400 mb-4 span-4"
+      class="bg-yellow-400 span-4"
     >
-      {{ deviceStore.getDeviceInfo[deviceStore.getCurrent].info }} 
+      <div
+        v-if="showInstructions"
+        class="prose max-w-none"
+      >
+        <ContentDoc path="/nts-1" />
+      </div>
+      <div class="w-full flex justify-center">
+        <button @click="toggleInstructions">
+          {{ showInstructions ? 'Hide' : 'Show' }}
+        </button>
+      </div>
     </MidiGroup>
     <MidiConfig
       :blink="blink"
@@ -51,15 +61,16 @@
 </template>
   
 <script setup lang="ts">
+
 import { useDeviceStore } from '~~/store/devices';
 import { useMidiLogStore } from '~~/store/midilog';
 import { useGlobalStore } from '~~/store/global';
 import { usePatchStore } from '~~/store/patches';
 
+const deviceStore = useDeviceStore();
 const midiLog = useMidiLogStore()
 const globalStore = useGlobalStore()
 const patchStore = usePatchStore()
-const deviceStore = useDeviceStore();
 
 const route = useRoute();
 
@@ -67,6 +78,16 @@ const midiElements = {
   'MidiRange': resolveComponent('MidiRange'),
   'MidiSelect': resolveComponent('MidiSelect'),
 };
+
+console.log(patchStore.getDeviceConfig)
+console.log(deviceStore)
+
+const showInstructions = ref(false); // ref(patchStore.getDeviceConfig[deviceStore.getCurrent].showInstructions);
+
+const toggleInstructions = () => {
+  showInstructions.value = !showInstructions.value;
+  patchStore.setDeviceShowInstructions(deviceStore.getCurrent, showInstructions.value)
+}
 
 const blink = ref(false);
 
@@ -95,6 +116,7 @@ const midiOutput = (midiMessage: MidiMessage) => {
 onBeforeMount(() => {
   const synth = route.params.name as string;
   deviceStore.setCurrent(synth);
+  showInstructions.value = patchStore.getDeviceConfig[deviceStore.getCurrent].showInstructions;
 
   globalStore.setPageTitle(deviceStore.getDeviceInfo[synth].name);
 });

@@ -46,6 +46,14 @@ interface MidiDeviceInfo {
   [name: string]: MidiDeviceInfos;
 }
 
+interface MidiDeviceConfig {
+  showInstructions: boolean;
+}
+
+interface MidiDeviceConfigs {
+  [name: string]: MidiDeviceConfig;
+}
+
 export {
   MidiPatches,
   MidiDevice,
@@ -55,4 +63,5 @@ export {
   MidiParameters,
   MidiController,
   MidiDeviceInfo,
+  MidiDeviceConfigs,
 };
