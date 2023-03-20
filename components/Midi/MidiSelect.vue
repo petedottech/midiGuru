@@ -134,7 +134,7 @@ const updateItems = () => {
   const result: any[] = [...props.items.filter(i => !i.editable).map(i => ({ name: i.name, editable: false}))];
   const updatedItems = rangeObjectValues(result.concat(localItems.value.map(i => ({ name: i, editable: true }))));
 
-  deviceStore.getDevices[deviceStore.getCurrent].controllers[props.parent].parameters[props.name].items = updatedItems;
+  deviceStore.getDevices[deviceStore.getCurrent][props.parent].parameters[props.name].items = updatedItems;
   showEditMidiSelectModal.value = false;
 }
 

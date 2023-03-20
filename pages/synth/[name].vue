@@ -4,6 +4,12 @@
     v-if="globalStore.getMidiOutput || globalStore.isDemo"
     class="grid grid-cols-4 gap-4 grid-flow-row-dense"
   >
+    <MidiGroup
+      name="Instructions"
+      class="bg-yellow-400 mb-4 span-4"
+    >
+      {{ deviceStore.getDeviceInfo[deviceStore.getCurrent].info }} 
+    </MidiGroup>
     <MidiConfig
       :blink="blink"
       class="span-1"
@@ -14,7 +20,7 @@
     />
     <MidiLogger class="span-2" />
     <MidiGroup
-      v-for="(controller, key, index) in deviceStore.getDevices[deviceStore.getCurrent].controllers"
+      v-for="(controller, key, index) in deviceStore.getDevices[deviceStore.getCurrent]"
       :key="index"
       :name="key"
       class="nts-1"
@@ -90,7 +96,7 @@ onBeforeMount(() => {
   const synth = route.params.name as string;
   deviceStore.setCurrent(synth);
 
-  globalStore.setPageTitle(deviceStore.getDevices[synth].name);
+  globalStore.setPageTitle(deviceStore.getDeviceInfo[synth].name);
 });
 
 </script>

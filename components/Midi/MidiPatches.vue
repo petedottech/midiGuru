@@ -185,9 +185,9 @@ const createPatch = () => {
 };
 
 const sendPanel = () => {
-  for (const controller in deviceStore.getDevices[deviceStore.getCurrent]['controllers']) {
-    for (const parameter in deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters']) {
-      const settings = deviceStore.getDevices[deviceStore.getCurrent]['controllers'][controller]['parameters'][parameter]
+  for (const controller in deviceStore.getDevices[deviceStore.getCurrent]) {
+    for (const parameter in deviceStore.getDevices[deviceStore.getCurrent][controller]['parameters']) {
+      const settings = deviceStore.getDevices[deviceStore.getCurrent][controller]['parameters'][parameter]
       const midiMsg = { status: 0xb0, data_one: settings.cc_msg, data_two: settings.cc_value };
       emit('midiOutput', midiMsg);
     }
@@ -195,8 +195,6 @@ const sendPanel = () => {
 };
 
 onMounted(() => {
-  globalStore.setPageTitle(deviceStore.getDevices[deviceStore.getCurrent].name);
-
   patchStore.getPatches[deviceStore.getCurrent]['Default'] = JSON.parse(JSON.stringify(deviceStore.getDevices[deviceStore.getCurrent]));
 });
 

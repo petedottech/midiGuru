@@ -29,17 +29,21 @@ interface MidiController {
   parameters: MidiParameters;
 }
 
-interface MidiControllers {
-  [type: string]: MidiController;
-}
-
 interface MidiDevices {
   [name: string]: MidiDevice;
 }
 
 interface MidiDevice {
+  [type: string]: MidiController;
+}
+
+interface MidiDeviceInfos {
   name: string;
-  controllers: MidiControllers;
+  info: string;
+}
+
+interface MidiDeviceInfo {
+  [name: string]: MidiDeviceInfos;
 }
 
 export {
@@ -50,5 +54,5 @@ export {
   MidiParameter,
   MidiParameters,
   MidiController,
-  MidiControllers,
+  MidiDeviceInfo,
 };

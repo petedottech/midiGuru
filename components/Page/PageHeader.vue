@@ -2,7 +2,7 @@
   <div class="w-full flex items-center justify-between">
     <div class="flex justify-center items-center space-x-4">
       <div
-        v-if="globalStore.getPageTitle.length"
+        v-if="globalStore.getPageTitle && globalStore.getPageTitle.length"
       >
         <h1 class="text-2xl md:text-5xl font-semibold">
           {{ globalStore.getPageTitle }} 
