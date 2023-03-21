@@ -18,6 +18,8 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/multiline-html-element-content-newline': 'off',
   },
 };

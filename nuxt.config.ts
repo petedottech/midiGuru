@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt-icon',
   ],
   css: ['@/assets/css/main.css'],
   tailwindcss: {},
