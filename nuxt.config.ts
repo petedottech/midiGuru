@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: 'midiGuru',
+      /* title: 'midiGuru', */
       charset: 'utf-16',
       /* meta: [
         { name: 'description', content: 'Generic stuff' },
@@ -20,12 +20,13 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@tailwindcss/typography',
+    '@nuxtjs/robots',
     '@nuxtjs/google-fonts',
     '@nuxt/content',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-icon',
+    '@tailwindcss/typography',
   ],
   css: ['@/assets/css/main.css'],
   tailwindcss: {},
@@ -35,6 +36,12 @@ export default defineNuxtConfig({
       // TODO: revisit these and consolodate
       Nunito: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       'Space Mono': [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    },
+  },
+  robots: {
+    rules: {
+      UserAgent: '*',
+      Disallow: '',
     },
   },
   runtimeConfig: {

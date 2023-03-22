@@ -5,9 +5,9 @@
     <div class="bolt bottom left" />
     <div class="bolt bottom right" />
 
-    <h1 class="text-center w-full font-semibold">
+    <h2 class="text-xl text-center w-full font-semibold">
       {{ name }}
-    </h1>
+    </h2>
     <slot />
   </div>
 </template>

@@ -35,8 +35,20 @@ if (cookieConsent.value) {
 useHead({
   htmlAttrs: {
     lang: 'en',
-  }
+  },
 });
+
+useServerSeoMeta({
+  title: 'A web based MIDI Controller and patch editor | midiGuru',
+  ogTitle: 'A web based MIDI Controller and patch editor | midiGuru',
+  description: 'A web based MIDI Controller and patch editor, currently supporting the Korg NTS-1 and with more synths and a no-code builder coming soon',
+  ogDescription: 'A web based MIDI Controller and patch editor, currently supporting the Korg NTS-1 and with more synths and a no-code builder coming soon',
+  ogImage: 'https://midi.guru/favicon.ico',
+  ogType: 'website',
+  ogUrl: 'https://midi.guru',
+  twitterCard: 'summary_large_image',
+});
+
 </script>
 
 <style lang="postcss">

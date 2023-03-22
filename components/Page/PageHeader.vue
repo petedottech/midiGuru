@@ -15,6 +15,7 @@
         <img
           class="h-8 md:h-12"
           src="~/assets/mididin.svg"
+          alt="midi Guru | A web based MIDI controller and patch editor"
         >
       </div>
       <a
@@ -31,9 +32,9 @@
       to="/"
       class="no-underline"
     >
-      <h1 class="text-3xl md:text-5xl font-semibold">
+      <div class="text-3xl md:text-5xl font-semibold">
         <strong>midi</strong>Guru
-      </h1>
+      </div>
     </NuxtLink>
   </div>
   <div class="w-full flex justify-center pt-4">
@@ -52,4 +53,17 @@
 <script setup lang="ts">
 import { useGlobalStore } from '~~/store/global';
 const globalStore = useGlobalStore();
+
+const route = useRoute();
+useHead({
+  htmlAttrs: {
+    lang: 'en',
+  },
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://midi.guru' + route.path,
+    },
+  ],
+});
 </script>

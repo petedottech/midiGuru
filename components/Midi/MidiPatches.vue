@@ -26,7 +26,7 @@
         </button>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
-        <h1>Current patch: {{ globalStore.getCurrentPatch }}</h1>
+        <div class="text-lg">Patch: <strong>{{ globalStore.getCurrentPatch }}</strong></div>
       </div>
       <div class="flex flex-wrap justify-center w-full gap-1">
         <button
