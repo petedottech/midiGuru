@@ -77,38 +77,32 @@
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
 import { useDeviceStore } from '~~/store/devices';
-import { MidiRange } from '~~/types/types';
+import { MidiRange, MidiMessage } from '~~/types/types';
 
 import { rangeObjectValues } from '~~/utils/midi';
 
 const midiLog = useMidiLogStore()
 const deviceStore = useDeviceStore();
-const emit = defineEmits(['midiOutput', 'update:modelValue'])
-const props = defineProps({
-    modelValue: {
-      type: Number,
-      default: 0,
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    ccMsg: {
-      type: Number,
-      required: true
-    }, // should be unsigned byte...
-    editable: {
-      type: Boolean,
-      default: false,
-    },
-    parent: {
-        type: String,
-        required: true
-    },
-    items: {
-      type: Array<MidiRange>,
-      default: () => [],
-    },
+
+const emit = defineEmits<{
+  (e: 'midiOutput', payload: MidiMessage ): void,
+  (e: 'update:modelValue', value: number ): void,
+}>();
+
+interface Props {
+  modelValue: number;
+  name: string;
+  ccMsg: number;
+  editable: boolean;
+  parent: string;
+  items: Array<MidiRange>;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: 0,
+  editable: false,
+  parent: '',
+  items: () => [],
 });
 
 const showEditMidiSelectModal = ref(false);
@@ -147,8 +141,9 @@ watch(() => props.modelValue, (updated, old) => {
 
 watch(selected, (selected) => {
   if (selected !== -1) {
-    const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
+    const midiMsg: MidiMessage = { status: 0xb0, data_one: props.ccMsg, data_two: props.items[selected].value };
     midiLog.log(`${props.parent} ${props.name} ${props.items[selected].name} ${props.ccMsg} ${props.items[selected].value}`);
+
     emit('midiOutput', midiMsg);
     emit('update:modelValue', props.items[selected].value)
   }

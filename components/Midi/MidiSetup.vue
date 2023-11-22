@@ -85,7 +85,7 @@ onNuxtReady(async () => {
 
       midiLog.log("MIDI ready!");
       globalStore.setMidiAccess(true);
-      midiOutputs.value = new Array(...midiAccess.outputs.values());
+      midiOutputs.value = [...midiAccess.outputs.values()];
 
       if (midiOutputs.value.length < 1){
         midiLog.log("No MIDI ports found");

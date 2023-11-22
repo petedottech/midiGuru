@@ -18,33 +18,32 @@
 
 <script setup lang="ts">
 import { useMidiLogStore } from '~~/store/midilog';
+import { MidiMessage } from '~~/types/types';
 
 const midiLog = useMidiLogStore();
-const emit = defineEmits(['midiOutput', 'update:modelValue'])
-const props = defineProps({
-    modelValue: {
-      type: Number,
-      default: 0
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    parent: {
-        type: String,
-        default: '' 
-    },
-    ccMsg: {
-        type: Number,
-        required: true
-    }, // should be unsigned byte...
+
+const emit = defineEmits<{
+  (e: 'midiOutput', payload: MidiMessage ): void,
+  (e: 'update:modelValue', value: number ): void,
+}>();
+
+interface Props {
+  modelValue: number;
+  name: string;
+  ccMsg: number;
+  parent: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: 0,
+  parent: '',
 });
 
 const updateCCValue = (event: Event) => {
   if (event.target) {
     const target = event.target as HTMLInputElement;
     
-    const midiMsg = { status: 0xb0, data_one: props.ccMsg, data_two: target.value };
+    const midiMsg: MidiMessage = { status: 0xb0, data_one: props.ccMsg, data_two: parseInt(target.value) };
     midiLog.log(`${props.parent} ${props.name} ${props.ccMsg} ${target.value}`);
     emit('midiOutput', midiMsg);
     emit('update:modelValue', parseInt(target.value));
@@ -57,6 +56,7 @@ const updateCCValue = (event: Event) => {
 input[type=range] {
   height: 26px;
   -webkit-appearance: none;
+  appearance: none;
   margin: 0px 0;
   width: 100%;
   background: none; 

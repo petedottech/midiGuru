@@ -12,10 +12,10 @@
             name="fa:instagram"
             size="1.2em"
           />
-          <nuxt-link
+          <NuxtLink
             class="ml-2"
             to="https://instagram.com/petedottech"
-          >petedottech</nuxt-link>
+          >petedottech</NuxtLink>
         </p>
         <p>
           <Icon
@@ -23,20 +23,20 @@
             size="1.2em"
           />
         
-          <nuxt-link
+          <NuxtLink
             class="ml-2"
             to="mailto:midiguru@petedot.tech"
-          >midiguru@petedot.tech</nuxt-link>
+          >midiguru@petedot.tech</NuxtLink>
         </p>
         <p>
           <Icon
             name="fa:chain"
             size="1.2em"
           />
-          <nuxt-link
+          <NuxtLink
             class="ml-2"
             to="https://hamling.tech"
-          >https://hamling.tech</nuxt-link>
+          >https://hamling.tech</NuxtLink>
         </p>
       </section>
 

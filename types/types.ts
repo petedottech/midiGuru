@@ -53,6 +53,12 @@ interface MidiDeviceConfigs {
   [name: string]: MidiDeviceConfig;
 }
 
+interface MidiMessage {
+  status: number;
+  data_one: number;
+  data_two: number;
+}
+
 export {
   MidiPatches,
   MidiDevice,
@@ -63,4 +69,5 @@ export {
   MidiController,
   MidiDeviceInfo,
   MidiDeviceConfigs,
+  MidiMessage,
 };

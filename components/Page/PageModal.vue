@@ -26,16 +26,16 @@
 
 <script setup lang="ts">
 
-const props = defineProps({
-  show: {
-    default: false,
-    type: Boolean,
-  },
-  name: {
-    default: 'Title',
-    type: String,
-  }
+interface Props {
+  show: boolean;
+  name: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  show: false,
+  name: 'title',
 });
+
 </script>  
 
 <style lang="postcss" scoped>
